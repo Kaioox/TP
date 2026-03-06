@@ -3,12 +3,20 @@ import './Produit.css';
 
 function Produit({ onAjouter }) { 
   const [produits, setProduits] = useState([]);
+const [loading, setLoading] = useState(true); // Nouvel état
 
-  fetch('https://fakestoreapi.com/products')
-    .then(res => res.json())
-    .then(json => {
-      setProduits(json);
-    });
+  useEffect(() => {
+    fetch('https://fakestoreapi.com/products')
+      .then(res => res.json())
+      .then(json => {
+        setProduits(json);
+        setLoading(false);
+      });
+  }, []);
+
+  if (loading) {
+    return <div className="loader">Chargement des produits en cours...</div>;
+  }
 
   return (
     <>
